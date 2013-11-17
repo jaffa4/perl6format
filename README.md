@@ -19,5 +19,5 @@ say $f.format({indentsize=>4},$content); # format using indentsize 4.
 
 Command line access:
 
-perl6 format.p6 -is 4 <Dagrammar.p6 >formatted.p6
+perl6 format.p6 -is 4 <<Dagrammar.p6 >>formatted.p6
 
