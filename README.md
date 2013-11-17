@@ -17,7 +17,12 @@ my $f=  Perl6::Format.new(); # create a new object
 
 say $f.format({indentsize=>4},$content); # format using indentsize 4.
 
+Only identation size can be set now.
+
 Command line access:
 
-perl6 format.p6 -is 4 <Dagrammar.p6 >formatted.p6
+
+perl6 format.p6 -h
+
+perl6 format.p6 -is 4 \<Dagrammar.p6 \>formatted.p6
 
