@@ -1,4 +1,23 @@
-perl6format
-===========
+Perl6::Format
+==============
 
-Module for formatting Perl6 code 
+
+Format Perl6 code. 
+
+Known limitations: if there is a BEGIN, there will not be any formatting. Also , if classes are imported from nqp.
+
+
+Usage:
+
+
+use Perl6::Format;
+
+
+my $f=  Perl6::Format.new(); # create a new object
+
+say $f.format({indentsize=>4},$content); # format using indentsize 4.
+
+Command line access:
+
+perl6 format.p6 -is 4 <Dagrammar.p6 >formatted.p6
+
