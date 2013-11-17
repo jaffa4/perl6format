@@ -23,5 +23,6 @@ Command line access:
 
 
 perl6 format.p6 -h
+
 perl6 format.p6 -is 4 \<Dagrammar.p6 \>formatted.p6
 
