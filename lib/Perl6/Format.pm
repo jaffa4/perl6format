@@ -41,6 +41,7 @@ if ( @!tokens == 0 ) {
   my @token_out;
   my $indentnext = 0;
   my $indentsize = %options<indentsize> // 2;
+  my $nibble = False;
 
 for @!tokens.kv -> $i, @token
 {
@@ -80,7 +81,15 @@ if ($token~~/^\{|\{$/ && (@token[0].exists_key("blockoid") || @!tokens.elems>$i+
  $level++;
   say "level++"~$level if $debug ;
 }
-if ($token ~~ /(.*\n)(.*)/)
+if (@token[0].exists_key("nibble"))
+{
+ $nibble = True;
+}
+if (@token[0].exists_key("nibble_end"))
+{
+ $nibble = False;
+}
+if (!$nibble && $token ~~ /(.*\n)(.*)/)
 {
 push @token_out, $/[0];
 push @token_out, $/[1];
