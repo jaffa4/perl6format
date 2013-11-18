@@ -47,7 +47,7 @@ for @!tokens.kv -> $i, @token
 {
 say @token.perl if $debug ;
 my $token =  $text.substr(@token[1],@token[2]-@token[1]);
-say $token if $debug ;
+say ">>{$token}<<" if $debug ;
 if ( $token~~/\}$|^\}/ && (@!tokens.elems>$i+1 && (@!tokens[$i+1][0].exists_key("blockoid_end") || @!tokens[$i][0].exists_key("termaltseq_end") )) )
 { 
  $level--;
@@ -60,13 +60,15 @@ if ($newline)
  {
   if (@token_out.elems>0 && @token_out[*-1].chars>0)
   {
-    @token_out[*-1] =  " " x ( $indentsize * $level );
+    @token_out[*-1] =  @token_out[*-1] ~ (" " x ( $indentsize * $level ));
   }
   else
   {
+   #say "here";
+ #  exit 0;
    push @token_out, ( " " x ( $indentsize * $level ) );
   }
-    say "here2{$token}<<" if $debug ;
+    say "here2{@token_out[*-1]}{$token}<<" if $debug ;
  }
  else
  {
@@ -89,11 +91,44 @@ if (@token[0].exists_key("nibble_end"))
 {
  $nibble = False;
 }
-if (!$nibble && $token ~~ /(.*\n)(.*)/)
+#say "nibble:$nibble\<\<{$token}\>";
+if (!$nibble)
 {
-push @token_out, $/[0];
-push @token_out, $/[1];
+if ($token ~~ /\n/)
+{
+
+" "~~ /s/; # because perl6 buggy. this restores the start of regex search pos to 0.
+while ($token ~~ m:c/$<a>=(.*?\n)\s*$<b>=(\S\N*)||$<c>=(.*?\n)\s*$||$<d>=(.+)/)
+{
+#say $/.perl;
+if ($/<a>)
+{
+#say "0000";
+push @token_out, $/<a>;
+push @token_out, $/<b>;
+@token_out[*-1] =  " " x ( $indentsize * $level ) ~ @token_out[*-1];
+}
+elsif ($/<c>)
+{
+#say "c";
+push @token_out, $/<c>;
 $newline = 1;
+}
+else
+{
+#say "d";
+push @token_out, $/<d>;
+}
+
+}
+}
+else
+{
+push @token_out, $token;
+}
+#say "after";
+#say ">>>>{$/[0]}|||{$/[1]}<<<<";
+
 }
 else
 {
