@@ -1,28 +1,22 @@
-Perl6::Format
-==============
+# Perl6::Format
+
+Format Perl6 code.
+
+Known limitations: if there is a `BEGIN`, there will not be any formatting.
+Also, if classes are imported from nqp.
 
 
-Format Perl6 code. 
+## Usage
 
-Known limitations: if there is a BEGIN, there will not be any formatting. Also , if classes are imported from nqp.
+    use Perl6::Format;
 
-
-Usage:
-
-
-use Perl6::Format;
-
-
-my $f=  Perl6::Format.new(); # create a new object
-
-say $f.format({indentsize=>4},$content); # format using indentsize 4.
+    my $f = Perl6::Format.new(); # create a new object
+    say $f.format({indentsize=>4},$content); # format using indentsize 4.
 
 Only identation size can be set now.
 
-Command line access:
+## Command line access
 
+    $ perl6 format.p6 -h
 
-perl6 format.p6 -h
-
-perl6 format.p6 -is 4 \<Dagrammar.p6 \>formatted.p6
-
+    $ perl6 format.p6 -is 4 \<Dagrammar.p6 \>formatted.p6
