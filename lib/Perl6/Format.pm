@@ -1,5 +1,5 @@
 use Perl6::Parsing;
-class Perl6::Format;
+unit class Perl6::Format;
 
 
 constant $debug = 0;
