@@ -1,13 +1,12 @@
 use Rakudo::Perl6::Parsing;
-class Rakudo::Perl6::Format;
+
+unit class Rakudo::Perl6::Format;
 
 
 constant $debug = 0;
 
-#say Perl6::Parsing.new();
+
 has @.tokens;
-
-
 
 method new() {
   self.bless(  );
@@ -15,12 +14,14 @@ method new() {
 
 method format(%options,$text)
 {
-  my $parser = Perl6::Parsing.new();
+    my $parser = Rakudo::Perl6::Parsing.new();
+
   $parser.parse( $text ); 
+  $parser.dumptokens().perl;
 
   @!tokens = $parser.tokenise();
 
-#say @!tokens.perl;
+  #say @!tokens.perl;
 
   if ( @!tokens == 0 ) {
     return;
@@ -40,7 +41,7 @@ method format(%options,$text)
     say @token.perl if $debug ;
     my $token =  $text.substr(@token[1],@token[2]-@token[1]);
     say ">>{$token}<<" if $debug ;
-    if ( $token~~/\}$|^\}/ && (@!tokens.elems>$i+1 && (@!tokens[$i+1][0].exists_key("blockoid_end") || @!tokens[$i][0].exists_key("termaltseq_end") )) )
+    if ( $token~~/\}$|^\}/ && (@!tokens.elems>$i+1 && (@!tokens[$i+1][0]<blockoid_end>:exists or @!tokens[$i][0]<termaltseq_end>:exists )) )
     { 
       $level--;
       say "level--"~$level if $debug ;
@@ -69,16 +70,16 @@ method format(%options,$text)
       }
     $newline = 0;
     }
-    if ($token~~/^\{|\{$/ && (@token[0].exists_key("blockoid") || @!tokens.elems>$i+1 && @!tokens[$i+1][0].exists_key("termaltseq")))
+    if ($token~~/^\{|\{$/ && (@token[0]<blockoid>:exists or @!tokens.elems>$i+1 and @!tokens[$i+1][0]<termaltseq>:exists))
     { 
       $level++;
       say "level++"~$level if $debug ;
     }
-    if (@token[0].exists_key("nibble"))
+    if (@token[0]<nibble> :exists) 
     {
       $nibble = True;
     }
-    if (@token[0].exists_key("nibble_end"))
+    if (@token[0]<nibble_end> :exists)
     {
       $nibble = False;
     }
